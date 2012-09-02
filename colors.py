@@ -16,13 +16,14 @@ import re
 
 from functools import partial
 
-
-__version__ = '1.0.2'
+__version__ = '1.0.3'
 
 COLORS = ('black', 'red', 'green', 'yellow', 'blue', 'magenta', 'cyan',
-          'white')
-STYLES = ('bold', 'faint', 'italic', 'underline', 'blink', 'blink2',
-          'negative', 'concealed', 'crossed')
+          'white',
+          'brightblack', 'brightred', 'brightgreen', 'brightyellow',
+          'brightblue', 'brightmagenta', 'brightcyan', 'brightwhite')
+STYLES = ('none', 'bold', 'faint', 'italic', 'underline', 'blink',
+          'blink2', 'negative', 'concealed', 'crossed')
 
 
 def color(s, fg=None, bg=None, style=None):
@@ -30,7 +31,11 @@ def color(s, fg=None, bg=None, style=None):
 
     if fg:
         if fg in COLORS:
-            sgr.append(str(30 + COLORS.index(fg)))
+            fgindex = COLORS.index(fg)
+            if fgindex < 8:
+                sgr.append(str(30 + fgindex))
+            else:
+                sgr.append('38;5;%d' % fgindex)
         elif isinstance(fg, int) and 0 <= fg <= 255:
             sgr.append('38;5;%d' % int(fg))
         else:
@@ -38,7 +43,11 @@ def color(s, fg=None, bg=None, style=None):
 
     if bg:
         if bg in COLORS:
-            sgr.append(str(40 + COLORS.index(bg)))
+            bgindex = COLORS.index(bg)
+            if bgindex < 8:
+                sgr.append(str(40 + bgindex))
+            else:
+                sgr.append('48;5;%d' % bgindex)
         elif isinstance(bg, int) and 0 <= bg <= 255:
             sgr.append('48;5;%d' % bg)
         else:
@@ -47,7 +56,7 @@ def color(s, fg=None, bg=None, style=None):
     if style:
         for st in style.split('+'):
             if st in STYLES:
-                sgr.append(str(1 + STYLES.index(st)))
+                sgr.append(str(STYLES.index(st)))
             else:
                 raise Exception('Invalid style "%s"' % st)
 
