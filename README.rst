@@ -6,17 +6,18 @@ A simple module to add ANSI colors and decorations to your strings.
 Example Usage
 -------------
 
-You can choose one of the 8 basic ANSI colors: black, red, green, yellow, blue,
-magenta, cyan, white.
+You can choose one of the 8 basic ANSI colors: ``black``, ``red``, ``green``,
+``yellow``, ``blue``,
+``magenta``, ``cyan``, and ``white``.
 
-Each color also has a 'bright' partner: brightblack,
-brightred, brightgreen, brightyellow, brightblue, brightmagenta, brightcyan,
-brightwhite. (Instead of 'bright', these additional 8 colors are sometimes
-referred to as 'light', 'high' or 'intense' variants 
-variants.) On many terminals, these 'bright' variants are needed to get
-the color you expect. Especially for naturally bright colors such as
-yellow and white, brightyellow and brightwhite are much yellower and whiter,
-respectively.
+Each color also has a 'bright' partner: ``brightblack``, ``brightred``,
+``brightgreen``, ``brightyellow``, ``brightblue``, ``brightmagenta``,
+``brightcyan``, and ``brightwhite``. (Instead of 'bright', these additional 8
+colors are sometimes referred to as 'light', 'high', or 'intense' 
+variants.) On many terminals, such 'bright' variants are needed to get the
+color you expect, especially for naturally bright colors.
+``brightyellow`` is often a much better yellow than ``yellow``, and
+``brightwhite`` is much whiter than ``white``.
 
 ::
 
@@ -50,7 +51,9 @@ You can also use more than one styles at once.
 
     print red('This is very important', style='bold+underline')
     
-If you want a general-purpose styling function, that's available too:
+If you want a general-purpose styling function, that's available too.
+
+::
 
     from colors import color
     
