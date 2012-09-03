@@ -9,11 +9,21 @@ Example Usage
 You can choose one of the 8 basic ANSI colors: black, red, green, yellow, blue,
 magenta, cyan, white.
 
+Each color also has a 'bright' partner: brightblack,
+brightred, brightgreen, brightyellow, brightblue, brightmagenta, brightcyan,
+brightwhite. (Instead of 'bright', these additional 8 colors are sometimes
+referred to as 'light', 'high' or 'intense' variants 
+variants.) On many terminals, these 'bright' variants are needed to get
+the color you expect. Especially for naturally bright colors such as
+yellow and white, brightyellow and brightwhite are much yellower and whiter,
+respectively.
+
 ::
 
-    from colors import red, green, blue
+    from colors import red, green, blue, brightgreen
     print red('This is red')
     print green('This is green')
+    print brightgreeen('This is brightgreen')
     print blue('This is blue')
 
 Optionally you can specify a background color.
@@ -23,7 +33,7 @@ Optionally you can specify a background color.
     print red('red on blue', bg='blue')
     print green('green on black', bg='black')
 
-You can additionally specify one of the supported styles: bold, faint, italic,
+You can additionally specify one of the supported styles: none, bold, faint, italic,
 underline, blink, blink2, negative, concealed, crossed. Not all styles are
 supported by all terminals.
 
@@ -39,6 +49,12 @@ You can also use more than one styles at once.
 ::
 
     print red('This is very important', style='bold+underline')
+    
+If you want a general-purpose styling function, that's available too:
+
+    from colors import color
+    
+    print color('This', style='underline'), 'is', color('very red', fg='brightred')
 
 xterm-256 colors are supported as well, to use them give an integer instead of
 a color name.
@@ -49,6 +65,8 @@ a color name.
     for i in range(256):
         print color('Color #%d' % i, fg=i)
 
+The included test program, ``test_colors.py``, can be run to see what colors
+and styles work well on a given terminal.
 
 License
 -------
