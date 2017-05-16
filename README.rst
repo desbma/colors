@@ -1,7 +1,7 @@
 ANSI colors for Python
 ======================
 
-A simple module to add ANSI colors and decorations to your strings.
+le module to add ANSI colors and decorations to your strings.
 
 Example Usage
 -------------
@@ -11,7 +11,7 @@ You can choose one of the 8 basic ANSI colors: ``black``, ``red``, ``green``,
 ``magenta``, ``cyan``, and ``white``.
 
 Each color also has a 'bright' partner: ``brightblack``, ``brightred``,
-``brightgreen``, ``brightyellow``, ``brightblue``, ``brightmagenta``,
+ghtgreen``, ``brightyellow``, ``brightblue``, ``brightmagenta``,
 ``brightcyan``, and ``brightwhite``. (Instead of 'bright', these additional 8
 colors are sometimes referred to as 'light', 'high', or 'intense' 
 variants.) On many terminals, such 'bright' variants are needed to get the
