@@ -5,7 +5,8 @@ Tests for colors module
 """
 
 from __future__ import absolute_import
-from colors import color, strip_color
+from colors import *
+
 from pytest import raises
 
 
@@ -17,6 +18,13 @@ def test_nocolors():
 def test_redcolor():
     """Test if we get a correct red"""
     assert color("RED", fg="red") == '\x1b[31mRED\x1b[0m'
+
+
+def test_default_color():
+    assert color('test', fg='default') == '\x1b[39mtest\x1b[0m'
+    assert color('test', bg='default') == '\x1b[49mtest\x1b[0m'
+    assert color('test', fg='default', bg='default') == \
+        '\x1b[39;49mtest\x1b[0m'
 
 
 def test_error_on_bad_color_string():
@@ -36,9 +44,27 @@ def test_error_on_bad_color_int():
         color("RED", 911)
 
 
+def test_tuple_color():
+    orange = (255, 165, 0)
+    assert color('ORANGE', fg=orange) == '\x1b[38;2;255;165;0mORANGE\x1b[0m'
+
+
+def test_css_color():
+    assert color('ORANGE', fg='orange') == '\x1b[38;2;255;165;0mORANGE\x1b[0m'
+
+
 def test_background_color():
     """Test the background color with string"""
+
     assert color("RED", bg="red") == '\x1b[41mRED\x1b[0m'
+    assert color('PURPLE', bg='purple') == '\x1b[48;2;128;0;128mPURPLE\x1b[0m'
+
+
+def test_mixed_color():
+    assert color('PINK/GRAY', fg='pink', bg='gray') == \
+        '\x1b[38;2;255;192;203;48;2;128;128;128mPINK/GRAY\x1b[0m'
+    assert color('GRAY/PINK', fg='gray', bg='pink') == \
+        '\x1b[38;2;128;128;128;48;2;255;192;203mGRAY/PINK\x1b[0m'
 
 
 def test_style_color():
@@ -67,3 +93,26 @@ def test_error_on_bad_style():
 def test_remove_color():
     """We can get the original message without the colors"""
     assert strip_color(color("RED", "red")) == "RED"
+
+
+def test_parse_rgb():
+    peachpuff = (255, 218, 185)
+    assert parse_rgb('peachpuff') == peachpuff
+    assert parse_rgb('#ffdab9') == peachpuff
+    assert parse_rgb('rgb(255, 218, 185)') == peachpuff
+    assert parse_rgb('peachpuff') == peachpuff
+
+    rebeccapurple = (102, 51, 153)
+    assert parse_rgb('rebeccapurple') == rebeccapurple
+    assert parse_rgb('#639') == rebeccapurple
+    assert parse_rgb('rgb(102,51,153)') == rebeccapurple
+
+
+def test_partial_functions():
+    # a few spot-checks
+    assert black('test') == color('test', 'black')
+    assert red('test') == color('test', 'red')
+    assert green('test') == color('test', 'green')
+
+    assert bold('test') == color('test', style='bold')
+    assert underline('test') == color('test', style='underline')

@@ -15,19 +15,16 @@
 from __future__ import absolute_import, print_function
 import re
 import sys
-from .csscolors import css_colors
+from .csscolors import parse_rgb, css_colors
 
 _PY3 = sys.version_info[0] > 2
 string_types = str if _PY3 else basestring
 
 from functools import partial
 
-# Stock ANSI color names, extended with "bright" variants which
-# are often required for good look on terminals.
+# Stock ANSI color names. There is also a "default"
 COLORS = ('black', 'red', 'green', 'yellow', 'blue',
-          'magenta', 'cyan', 'white',
-          'brightblack', 'brightred', 'brightgreen', 'brightyellow', 'brightblue',
-          'brightmagenta', 'brightcyan', 'brightwhite')
+          'magenta', 'cyan', 'white')
 
 # ANSI style names
 STYLES = ('none', 'bold', 'faint', 'italic', 'underline', 'blink',
@@ -39,6 +36,14 @@ def is_string(obj):
     Is the given object a string?
     """
     return isinstance(obj, string_types)
+
+def _join(*values):
+    """
+    Join a series of values with semicolons. The values
+    are either integers or strings, so stringify each for
+    good measure.
+    """
+    return ';'.join(str(v) for v in values)
 
 
 def _color_code(spec, base):
@@ -52,24 +57,20 @@ def _color_code(spec, base):
     values use base + 8 (i.e. 38 or 48) then extended codes.
     """
     if is_string(spec):
-        spec = spec.lower()
-    if spec in COLORS:
-        index = COLORS.index(spec)
-        if index < 8:
-            return '{}'.format(base + index)
-        else:
-            return '{};5;{}'.format(base + 8, index)
+        spec = spec.strip().lower()
+
+    if spec == 'default':
+        return _join(base + 9)
+    elif spec in COLORS:
+        return _join(base + COLORS.index(spec))
     elif isinstance(spec, int) and 0 <= spec <= 255:
-        return '{};5;{}'.format(base + 8, spec)
+        return _join(base + 8, 5, spec)
     elif isinstance(spec, (tuple, list)):
-        rgbpart = ';'.join(x for x in spec)
-        return '{};2;{}'.format(base + 8, rgbpart)
-    elif spec in css_colors:
-        rgb = css_colors[spec]
-        rgbpart = ';'.join(x for x in rgb)
-        return '{};2;{}'.format(base + 8, rgbpart)
+        return _join(base + 8, 2, _join(*spec))
     else:
-        raise ValueError('Invalid color "%s"' % spec)
+        rgb = parse_rgb(spec)
+        # parse_rgb raises ValueError if cannot parse spec
+        return _join(base + 8, 2, _join(*rgb))
 
 
 def color(s, fg=None, bg=None, style=None):
@@ -96,9 +97,7 @@ def color(s, fg=None, bg=None, style=None):
                 raise ValueError('Invalid style "%s"' % style_part)
 
     if codes:
-        prefix = '\x1b[{0}m'.format(';'.join(codes))
-        suffix = '\x1b[0m'
-        return prefix + s + suffix
+        return '\x1b[{0}m{1}\x1b[0m'.format(_join(*codes), s)
     else:
         return s
 

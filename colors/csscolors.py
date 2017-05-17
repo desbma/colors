@@ -2,6 +2,13 @@
 Map of CSS color names to RGB integer values.
 """
 
+import re
+import sys
+
+_PY3 = sys.version_info[0] > 2
+string_types = str if _PY3 else basestring
+
+
 css_colors = {
     'aliceblue':      (240, 248, 255),
     'antiquewhite':   (250, 235, 215),
@@ -152,3 +159,31 @@ css_colors = {
     'yellow':         (255, 255, 0),
     'yellowgreen':    (154, 205, 50)
 }
+
+
+def parse_rgb(s):
+    if not isinstance(s, string_types):
+        raise ValueError("Could not parse color '{0}'".format(s))
+    s = s.strip().replace(' ', '').lower()
+    # simple lookup
+    rgb = css_colors.get(s)
+    if rgb is not None:
+        return rgb
+
+    # 6-digit hex
+    match = re.match('#([a-f0-9]{6})$', s)
+    if match:
+        core = match.group(1)
+        return tuple(int(core[i:i+2], 16) for i in range(0, 6, 2))
+
+    # 3-digit hex
+    match = re.match('#([a-f0-9]{3})$', s)
+    if match:
+        return tuple(int(c*2, 16) for c in match.group(1))
+
+    # rgb(x,y,z)
+    match = re.match(r'rgb\((\d+,\d+,\d+)\)', s)
+    if match:
+        return tuple(int(v) for v in match.group(1).split(','))
+
+    raise ValueError("Could not parse color '{0}'".format(s))
