@@ -8,7 +8,11 @@ python:
     - "3.6"
     - "nightly"
     - "pypy"
+    - "pypy-5.3.1"
+    - "pypy-5.7.1"
     - "pypy3"
+    - "pypy3.3-5.2-alpha1"
+    - "pypy3-5.7.1"
 install:
     - python setup.py install 
 script: py.test --assert=plain
