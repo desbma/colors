@@ -117,7 +117,7 @@ def test_partial_functions():
 
 
 def test_doc_example():
-
+    """Text examples given in documentation"""
     assert color('my string', fg='blue') == \
            '\x1b[34mmy string\x1b[0m'
     assert color('some text', fg='red', bg='yellow', style='underline') == \

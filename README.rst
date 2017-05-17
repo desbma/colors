@@ -12,7 +12,6 @@ Example Usage
     from colors import *
 
     print(color('my string', fg='blue'))
-
     print(color('some text', fg='red', bg='yellow', style='underline'))
 
 The strings returned by ``color`` will have embedded
