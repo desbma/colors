@@ -22,7 +22,7 @@ string_types = str if _PY3 else basestring
 
 from functools import partial
 
-# Stock ANSI color names. There is also a "default"
+# ANSI color names. There is also a "default"
 COLORS = ('black', 'red', 'green', 'yellow', 'blue',
           'magenta', 'cyan', 'white')
 
@@ -37,11 +37,13 @@ def is_string(obj):
     """
     return isinstance(obj, string_types)
 
+
 def _join(*values):
     """
     Join a series of values with semicolons. The values
     are either integers or strings, so stringify each for
-    good measure.
+    good measure. Semicolon-joined lists are core to ANSI
+    encodings.
     """
     return ';'.join(str(v) for v in values)
 
@@ -49,12 +51,18 @@ def _join(*values):
 def _color_code(spec, base):
     """
     Workhorse of encoding a color. Give preference to named colors from
-    ANSI set, then to specific numeric or tuple specs. Finally, look up
-    in CSS colors.
+    ANSI, then to specific numeric or tuple specs. If those don't work,
+    try looking up look CSS color names or parsing CSS hex and rgb color
+    specifications.
 
-    Base is a numeric value, either 30 or 40, signifying the base value
-    for color encoding. Low values are added directly to the base. Higher
-    values use base + 8 (i.e. 38 or 48) then extended codes.
+    :param str|int|tuple|list spec: Unparsed color specification
+    :param int base: Either 30 or 40, signifying the base value
+        for color encoding (foreground and background respectively).
+        Low values are added directly to the base. Higher values use `
+        base + 8` (i.e. 38 or 48) then extended codes.
+    :returns: Discovered ANSI color encoding.
+    :rtype: str
+    :raises: ValueError if cannot parse the color spec.
     """
     if is_string(spec):
         spec = spec.strip().lower()
@@ -76,12 +84,13 @@ def _color_code(spec, base):
 def color(s, fg=None, bg=None, style=None):
     """
     Add ANSI colors and styles to a string.
+
     :param str s: String to format.
     :param str|int|tuple fg: Foreground color specification.
     :param str|int|tuple bg: Background color specification.
     :param str: Style names, separated by '+'
     :returns: Formatted string.
-    :rtype: str (or unicode in Python 2)
+    :rtype: str (or unicode in Python 2, if s is unicode)
     """
     codes = []
 
@@ -92,7 +101,7 @@ def color(s, fg=None, bg=None, style=None):
     if style:
         for style_part in style.split('+'):
             if style_part in STYLES:
-                codes.append(str(STYLES.index(style_part)))
+                codes.append(STYLES.index(style_part))
             else:
                 raise ValueError('Invalid style "%s"' % style_part)
 
@@ -104,12 +113,12 @@ def color(s, fg=None, bg=None, style=None):
 
 def strip_color(s):
     """
-    Remove ANSI sequences from a string.
+    Remove ANSI color/style sequences from a string.
     """
     return re.sub('\x1b\[.+?m', '', s)
 
 
-# Foreground shortcuts
+# Foreground color shortcuts
 black = partial(color, fg='black')
 red = partial(color, fg='red')
 green = partial(color, fg='green')

@@ -4,9 +4,7 @@
 Tests for colors module
 """
 
-from __future__ import absolute_import
 from colors import *
-
 from pytest import raises
 
 
@@ -116,3 +114,24 @@ def test_partial_functions():
 
     assert bold('test') == color('test', style='bold')
     assert underline('test') == color('test', style='underline')
+
+
+def test_doc_example():
+
+    assert color('my string', fg='blue') == \
+           '\x1b[34mmy string\x1b[0m'
+    assert color('some text', fg='red', bg='yellow', style='underline') == \
+           '\x1b[31;43;4msome text\x1b[0m'
+
+
+def test_custom_partial():
+    important = partial(color, fg='red', style='bold+underline')
+    boldul = partial(color, style='bold+underline')
+
+    text = 'very important'
+    answer = '\x1b[31;1;4mvery important\x1b[0m'
+
+    assert color(text, fg='red', style='bold+underline') == answer
+    assert red(text, style='bold+underline') == answer
+    assert boldul(text, fg='red') == answer
+    assert important(text) == answer
