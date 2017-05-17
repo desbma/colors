@@ -46,7 +46,7 @@ To see them all::
         print(color('Color #%d' % i, fg=i))
 
 
-The included``show_colors.py`` program is a much-expanded version of this idea
+The included ``show_colors.py`` program is a much-expanded version of this idea
 that can be used to explore available color and style combinations on your
 terminal or output device.
 
