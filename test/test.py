@@ -91,6 +91,21 @@ def test_error_on_bad_style():
 def test_remove_color():
     """We can get the original message without the colors"""
     assert strip_color(color("RED", "red")) == "RED"
+    assert strip_color(color("text", "red", "green", "bold+underline")) == "text"
+
+
+def test_remove_color_extra():
+    """Test other sequences that color would not add, but that are seen in the wild."""
+    assert strip_color('some\x1b[Kthing') == 'something' # remove EL (erase to end of line)
+    assert strip_color('some\x1b[mthing') == 'something' # remove truncated style ending
+    assert strip_color('some\x1b[49;39mthing') == 'something' # remove odd color ends
+
+
+def test_ansilen():
+    assert ansilen('this') == 4
+    assert ansilen('this\x1b[K\x1b[0m') == 4
+    assert ansilen(red('this')) == 4
+    assert ansilen(color('this', 12, 22, 'underline+blink')) == 4
 
 
 def test_parse_rgb():

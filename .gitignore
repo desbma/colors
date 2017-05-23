@@ -1,6 +1,6 @@
 *.pyc
 *.egg-info
-.coverage
+.coverage*
 build/
 dist/
 htmlcov/
