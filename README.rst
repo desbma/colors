@@ -1,3 +1,30 @@
+
+| |travisci| |version| |versions| |impls| |wheel| |coverage|
+
+.. |travisci| image:: https://api.travis-ci.org/jonathaneunice/colors.svg
+    :target: http://travis-ci.org/jonathaneunice/colors
+
+.. |version| image:: http://img.shields.io/pypi/v/ansicolors.svg?style=flat
+    :alt: PyPI Package latest release
+    :target: https://pypi.python.org/pypi/ansicolors
+
+.. |versions| image:: https://img.shields.io/pypi/pyversions/ansicolors.svg
+    :alt: Supported versions
+    :target: https://pypi.python.org/pypi/ansicolors
+
+.. |impls| image:: https://img.shields.io/pypi/implementation/ansicolors.svg
+    :alt: Supported implementations
+    :target: https://pypi.python.org/pypi/ansicolors
+
+.. |wheel| image:: https://img.shields.io/pypi/wheel/ansicolors.svg
+    :alt: Wheel packaging support
+    :target: https://pypi.python.org/pypi/ansicolors
+
+.. |coverage| image:: https://img.shields.io/badge/test_coverage-100%25-6600CC.svg
+    :alt: Test line coverage
+    :target: https://pypi.python.org/pypi/ansicolors
+
+
 ANSI colors for Python
 ======================
 
@@ -53,7 +80,7 @@ terminal or output device.
 Modern terminals go even further than the ``xterm`` 256, often supporting a
 full 24-bit RGB color scheme. You can provide a full RGB value several ways:
 
-* with a 3-elment ``tuple`` or ``list`` of ``int``, each valued 0 to 255 (e.g. ``(255, 218, 185)``),
+* with a 3-element ``tuple`` or ``list`` of ``int``, each valued 0 to 255 (e.g. ``(255, 218, 185)``),
 * a string containing a CSS-compatible color name (e.g. ``'peachpuff'``),
 * a string containing a CSS-style hex value (e.g. ``'#aaa'`` or ``'#8a2be2'``)
 * a string containing a CSS-style RGB notation (e.g. ``rgb(102,51,153)``)
@@ -143,12 +170,19 @@ named style::
 
     print(important('very important'))
 
+Utility Functions
+-----------------
 
-::
+In deailing with ANSI-styled text, it can be necessary or convenient to
+determine the "equivalent" text minus the styling. The function
+``strip_color(s)`` does that, removing ANSI codes from ``s``, returning its
+"plain text equivalent."
 
-    from colors import color
-
-    print(color('This', style='underline'), 'is', color('very red', fg='brightred'))
+You may also wish to determine the effective length of a string. If it contains
+ANSI color and styling codes, the builtin ``len()`` function will return the
+length of those codes as well, which is probably not what you want. So
+``ansilen`` returns the "effective" length of the string, including only the
+non-ANSI characters. ``ansilen(s)`` is equivalent to ``len(strip_color(s))``,
 
 License
 -------
