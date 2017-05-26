@@ -57,7 +57,7 @@ You can choose one of the 8 basic ANSI colors: ``black``, ``red``, ``green``,
 ``default`` which is display-specific, but usually a rational "no special
 color" setting.
 
-There are other ways to specify colors. Many devies supprt
+There are other ways to specify colors. Many devices support
 an idiosyncratic 256-color scheme developed as an ANSI extension
 in conjunction with the
 `xterm terminal emulator <https://en.wikipedia.org/wiki/Xterm>`_.
@@ -102,10 +102,10 @@ Caveats
 -------
 
 Unfortunately there is no guarantee that every terminal or console will support
-all the colors and styles that ANSI ostensibly defines. In fact, most do not.
-Most output systems implement a subset. Colors are often better supported than
+all the colors and styles that ANSI ostensibly defines. In fact, most implement
+a subset--often a rather small subset. Colors are often better supported than
 styles, for which you *might* get one or two of the most popular styles such as
-``bold`` or ``underline``.
+``bold`` or ``underline``. *Might.*
 
 Whatever colors and styles are supported, there is no guarantee they will be
 accurately rendered. Even at this late date, over **fifty years** after the codes
@@ -118,16 +118,16 @@ Display technology was low-resolution, colors were limited even when present,
 and color/style fidelity was not a major consideration. Vendors thought little
 or nothing of creating their own proprietary codes, implementing functions
 differently from other vendors, and/or co-opting codes previously in use for
-something else. Practical ANSI reference materials tend to include many phrases
+something else. Practical ANSI reference materials tend to include *many* phrases
 such as 'hardly ever supported' and 'non-standard.'
 
-We still use ANSI codes not because they're especially good, but because they're
-the best, most standard approach pre-Web display systems even remotely agreed
-upon. And even in this post-Web era, output of text to consoles and terminal
-windows endures as an important means of computer-human interaction. The good
-news, such is it is: The color and style specifications ("SGR" or "Select
-Graphic Rendition" in ANSI terminology) are the most-used and best-adhered-to
-portion of the whole ANSI show.
+We still use ANSI codes today not because they're especially good, but because
+they're the best, most-standard approach that pre-Web display systems (consoles,
+terminals, and the like) even remotely agreed upon. And even in this post-Web
+era, output of text to consoles and terminal windows endures as an important
+means of human-computer interaction. The good news, such is it is: The color and
+style specifications ("SGR" or "Select Graphic Rendition" in ANSI terminology)
+are the most-used and best-adhered-to portion of the whole ANSI show.
 
 More Examples
 -------------
@@ -149,11 +149,10 @@ Optionally you can add a background color and/or styles.::
     print(green('green on black', bg='black', style='underline'))
 
 You can additionally specify one of the supported styles: ``none``, ``bold``,
-``faint``, ``italic``,
-``underline``, ``blink``, ``blink2``, ``negative``, ``concealed``, ``crossed``.
-While most devices support only a few styles, unsupported styles
-are generally ignored, so the only harm done is your text is less
-pretty and/or less formatted than you might like.
+``faint``, ``italic``, ``underline``, ``blink``, ``blink2``, ``negative``,
+``concealed``, ``crossed``. While most devices support only a few styles,
+unsupported styles are generally ignored, so the only harm done is your text is
+less pretty and/or less formatted than you might like.
 
 You can use multiple styles at once. Separate them with
 a ``+``.::
@@ -166,7 +165,7 @@ named style::
     from functools import partial
     from colors import color
 
-    important = partial(colors, fg='red', style='bold+underline'))
+    important = partial(color, fg='red', style='bold+underline'))
 
     print(important('very important'))
 
