@@ -58,11 +58,11 @@ You can choose one of the 8 basic ANSI colors: ``black``, ``red``, ``green``,
 color" setting.
 
 There are other ways to specify colors. Many devices support
-an idiosyncratic 256-color scheme developed as an ANSI extension
-in conjunction with the
+an idiosyncratic 256-color scheme developed as an extension to
+the original ANSI codes for the
 `xterm terminal emulator <https://en.wikipedia.org/wiki/Xterm>`_.
 Colors (or grays) from this larger palette can be specified via ``int``
-value.
+value (0-255).
 
 To see them all::
 
@@ -76,6 +76,9 @@ To see them all::
 The included ``show_colors.py`` program is a much-expanded version of this idea
 that can be used to explore available color and style combinations on your
 terminal or output device.
+
+24-bit Color and CSS Compatibility
+----------------------------------
 
 Modern terminals go even further than the ``xterm`` 256, often supporting a
 full 24-bit RGB color scheme. You can provide a full RGB value several ways:
@@ -101,11 +104,11 @@ the correct definition according to the CSS standards.
 Caveats
 -------
 
-Unfortunately there is no guarantee that every terminal or console will support
-all the colors and styles that ANSI ostensibly defines. In fact, most implement
-a subset--often a rather small subset. Colors are often better supported than
-styles, for which you *might* get one or two of the most popular styles such as
-``bold`` or ``underline``. *Might.*
+Unfortunately there is no guarantee that every terminal will support all the
+colors and styles ANSI ostensibly defines. In fact, most implement a rather
+small subset. Colors are better supported than styles, for which you *might* get
+one or two of the most popular such as ``bold`` or ``underline``.
+*Might.*
 
 Whatever colors and styles are supported, there is no guarantee they will be
 accurately rendered. Even at this late date, over **fifty years** after the codes
@@ -114,20 +117,20 @@ fragemented, and piecemeal.
 
 ANSI codes evolved in an entirely different historical context from today's.
 Both the Web and the idea of broad standardization were decades in the future.
-Display technology was low-resolution, colors were limited even when present,
-and color/style fidelity was not a major consideration. Vendors thought little
-or nothing of creating their own proprietary codes, implementing functions
-differently from other vendors, and/or co-opting codes previously in use for
-something else. Practical ANSI reference materials tend to include *many* phrases
-such as 'hardly ever supported' and 'non-standard.'
+Display technology was low-resolution, colors were limited on the rare occasions
+they were present, and color/style fidelity was not a major consideration.
+Vendors thought little or nothing of creating their own proprietary codes,
+implementing functions differently from other vendors, and/or co-opting codes
+previously in use for something else. Practical ANSI reference materials
+include *many* phrases such as 'hardly ever supported' and 'non-standard.'
 
 We still use ANSI codes today not because they're especially good, but because
-they're the best, most-standard approach that pre-Web display systems (consoles,
-terminals, and the like) even remotely agreed upon. And even in this post-Web
-era, output of text to consoles and terminal windows endures as an important
-means of human-computer interaction. The good news, such is it is: The color and
-style specifications ("SGR" or "Select Graphic Rendition" in ANSI terminology)
-are the most-used and best-adhered-to portion of the whole ANSI show.
+they're the best, most-standard approach that pre-Web displays even remotely
+agreed upon. Even deep into the Web era, text output endures as an important
+means of human-computer interaction. The good news, such is it is: ANSI's color
+and style specifications ("SGR" or "Select Graphic Rendition" in ANSI
+terminology) are the most-used and best-adhered-to portion of the whole ANSI
+show.
 
 More Examples
 -------------
@@ -148,18 +151,21 @@ Optionally you can add a background color and/or styles.::
     print(red('red on blue', bg='blue'))
     print(green('green on black', bg='black', style='underline'))
 
-You can additionally specify one of the supported styles: ``none``, ``bold``,
-``faint``, ``italic``, ``underline``, ``blink``, ``blink2``, ``negative``,
-``concealed``, ``crossed``. While most devices support only a few styles,
-unsupported styles are generally ignored, so the only harm done is your text is
-less pretty and/or less formatted than you might like.
-
 You can use multiple styles at once. Separate them with
 a ``+``.::
 
     print(red('very important', style='bold+underline'))
 
-If you use this style often, you may want to create your own
+You can additionally specify one of the supported styles: ``none``, ``bold``,
+``faint``, ``italic``, ``underline``, ``blink``, ``blink2``, ``negative``,
+``concealed``, ``crossed``. While most devices support only a few styles,
+unsupported styles are generally ignored, so the only harm done is your text is
+less pretty and/or formatted than you might like. A good general rule is
+to enjoy the formatting if you get it, but don't depend on it--especially
+don't depend on styles like ``blink`` (e.g. to highlight critical data) or
+``concealed`` (e.g. to hide data). Most likely, they won't.
+
+If you use a style often, you may want to create your own
 named style::
 
     from functools import partial
@@ -167,21 +173,21 @@ named style::
 
     important = partial(color, fg='red', style='bold+underline'))
 
-    print(important('very important'))
+    print(important('this is very important!'))
 
 Utility Functions
 -----------------
 
-In deailing with ANSI-styled text, it can be necessary or convenient to
-determine the "equivalent" text minus the styling. The function
-``strip_color(s)`` does that, removing ANSI codes from ``s``, returning its
-"plain text equivalent."
+In deailing with ANSI-styled text, it can be necessary to determine the
+"equivalent" text minus the styling. The function ``strip_color(s)`` does that,
+removing ANSI codes from ``s``, returning its "plain text equivalent."
 
 You may also wish to determine the effective length of a string. If it contains
-ANSI color and styling codes, the builtin ``len()`` function will return the
-length of those codes as well, which is probably not what you want. So
-``ansilen`` returns the "effective" length of the string, including only the
-non-ANSI characters. ``ansilen(s)`` is equivalent to ``len(strip_color(s))``,
+ANSI codes, the builtin ``len()`` function will return the length including
+those codes, even though they are logically 0-length. So plain ``len(s)`` is
+probably not what you need. ``ansilen(s)`` in contrast returns the "effective"
+length of the string, including only the non-ANSI characters. ``ansilen(s)`` is
+equivalent to ``len(strip_color(s))``,
 
 License
 -------

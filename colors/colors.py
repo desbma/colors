@@ -42,8 +42,8 @@ def _join(*values):
     """
     Join a series of values with semicolons. The values
     are either integers or strings, so stringify each for
-    good measure. Semicolon-joined lists are core to ANSI
-    encodings.
+    good measure. Worth breaking out as its own function
+    because semicolon-joined lists are core to ANSI coding.
     """
     return ';'.join(str(v) for v in values)
 
@@ -109,7 +109,9 @@ def color(s, fg=None, bg=None, style=None):
         template = '\x1b[{0}m{1}\x1b[0m'
         if _PY2 and isinstance(s, unicode):
             # Take care in PY2 to return str if string is given, and
-            # unicode if unicode is given.
+            # unicode if unicode is given. It's a pain, but given PY2's
+            # fragility with Unicode characters and encodings, important
+            # to avoid any disruptions that might trigger downstream errors.
             template = unicode(template)
         return template.format(_join(*codes), s)
     else:
