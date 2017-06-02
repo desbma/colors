@@ -1,3 +1,7 @@
+include tox.ini
+include toxcov.ini
+include pytest.ini
+include .coveragerc
 include README.rst 
 include LICENSE
 include CHANGES.yml
