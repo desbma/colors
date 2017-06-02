@@ -17,8 +17,8 @@ import re
 import sys
 from .csscolors import parse_rgb, css_colors
 
-_PY3 = sys.version_info[0] > 2
-string_types = str if _PY3 else basestring
+_PY2 = sys.version_info[0] == 2
+string_types = basestring if _PY2 else str
 
 from functools import partial
 
@@ -106,7 +106,12 @@ def color(s, fg=None, bg=None, style=None):
                 raise ValueError('Invalid style "%s"' % style_part)
 
     if codes:
-        return '\x1b[{0}m{1}\x1b[0m'.format(_join(*codes), s)
+        template = '\x1b[{0}m{1}\x1b[0m'
+        if _PY2 and isinstance(s, unicode):
+            # Take care in PY2 to return str if string is given, and
+            # unicode if unicode is given.
+            template = unicode(template)
+        return template.format(_join(*codes), s)
     else:
         return s
 

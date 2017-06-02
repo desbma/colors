@@ -6,6 +6,10 @@ Tests for colors module
 
 from colors import *
 from pytest import raises
+import pytest
+import sys
+
+_PY2 = sys.version_info[0] == 2
 
 
 def test_nocolors():
@@ -150,3 +154,33 @@ def test_custom_partial():
     assert red(text, style='bold+underline') == answer
     assert boldul(text, fg='red') == answer
     assert important(text) == answer
+
+
+@pytest.mark.skipif(not _PY2, reason="only relevant for PY2")
+def test_unicode_strings_py2():
+    """
+    Ensure that colors, given a str, returns a str. We already
+    know from other tests that given a unicode, returns a unicode
+    (else they would fail gloriously).
+    """
+    r1base = 'This is good'  # note is str, not unicode
+    r1 = red(r1base)
+    assert r1 == '\x1b[31mThis is good\x1b[0m'
+    assert strip_color(r1) == r1base
+    assert isinstance(strip_color(r1), str)
+    assert ansilen(r1) == len(r1base)
+    assert isinstance(r1, str)
+
+
+def test_unicode_strings():
+    r1base = u'This is good'
+    r1 = red(r1base)
+    assert r1 == u'\x1b[31mThis is good\x1b[0m'
+    assert strip_color(r1) == r1base
+    assert ansilen(r1) == len(r1base)
+
+    r2base = u'This\u2014is über good'
+    r2 = red(r2base)
+    assert r2 == u'\x1b[31mThis\u2014is \u00fcber good\x1b[0m'
+    assert strip_color(r2) == r2base
+    assert ansilen(r2) == len(r2base)

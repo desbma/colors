@@ -83,7 +83,7 @@ full 24-bit RGB color scheme. You can provide a full RGB value several ways:
 * with a 3-element ``tuple`` or ``list`` of ``int``, each valued 0 to 255 (e.g. ``(255, 218, 185)``),
 * a string containing a CSS-compatible color name (e.g. ``'peachpuff'``),
 * a string containing a CSS-style hex value (e.g. ``'#aaa'`` or ``'#8a2be2'``)
-* a string containing a CSS-style RGB notation (e.g. ``rgb(102,51,153)``)
+* a string containing a CSS-style RGB notation (e.g. ``'rgb(102,51,153)'``)
 
 These forms can be mixed and matched at will::
 
