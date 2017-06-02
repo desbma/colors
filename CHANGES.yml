@@ -1,5 +1,5 @@
 -
-    version: 1.1.18
+    version: 1.1.8
     date: June 2, 2017
     notes: >
         Added branch coverage metric. 100%, like line
@@ -7,7 +7,7 @@
 
 
 -
-    version: 1.1.17
+    version: 1.1.7
     date: June 2, 2017
     notes: >
         Tweaks to testing and Python 2/3 compatibility
@@ -18,7 +18,7 @@
         (affected Python 2 only).
     
 -
-    version: 1.1.16
+    version: 1.1.6
     date: May 26, 2017
     notes: >
         Updated with testing and extensions from
