@@ -1,4 +1,12 @@
 -
+    version: 1.1.18
+    date: June 2, 2017
+    notes: >
+        Added branch coverage metric. 100%, like line
+        coverage.
+
+
+-
     version: 1.1.17
     date: June 2, 2017
     notes: >

@@ -7,7 +7,7 @@ import colors
 
 setup(
     name='ansicolors',
-    version='1.1.7',
+    version='1.1.8',
     description='ANSI colors for Python',
     long_description=open('README.rst').read(),
     author='Giorgos Verigakis',

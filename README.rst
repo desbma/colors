@@ -1,5 +1,5 @@
 
-| |travisci| |version| |versions| |impls| |wheel| |coverage|
+| |travisci| |version| |versions| |impls| |wheel| |coverage| |br-coverage|
 
 .. |travisci| image:: https://api.travis-ci.org/jonathaneunice/colors.svg
     :target: http://travis-ci.org/jonathaneunice/colors
@@ -24,6 +24,9 @@
     :alt: Test line coverage
     :target: https://pypi.python.org/pypi/ansicolors
 
+.. |br-coverage| image:: https://img.shields.io/badge/branch_coverage-100%25-6600CC.svg
+    :alt: Test branch coverage
+    :target: https://pypi.python.org/pypi/ansicolors
 
 ANSI colors for Python
 ======================
