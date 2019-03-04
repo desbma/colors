@@ -30,6 +30,8 @@ COLORS = ('black', 'red', 'green', 'yellow', 'blue',
 STYLES = ('none', 'bold', 'faint', 'italic', 'underline', 'blink',
           'blink2', 'negative', 'concealed', 'crossed')
 
+_STRIP_COLOR_RE = re.compile('\x1b\\[(K|.*?m)')
+
 
 def is_string(obj):
     """
@@ -128,7 +130,7 @@ def strip_color(s):
     erase to end of line) and `\x1b[m`, a terse version of the more common
     `\x1b[0m`.
     """
-    return re.sub('\x1b\\[(K|.*?m)', '', s)
+    return _STRIP_COLOR_RE.sub('', s)
 
 
 def ansilen(s):
